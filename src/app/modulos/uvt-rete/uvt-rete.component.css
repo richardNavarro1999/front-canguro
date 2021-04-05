@@ -1,0 +1,24 @@
+table {
+    width: 100%;
+}
+
+.m {
+    width: 100%;
+}
+
+.matInput {
+    width: 100%;
+    color: gray;
+}
+
+.mat-input-underline {
+    color: dodgerblue;
+}
+
+.mat-input-ripple {
+    background-color: dodgerblue;
+}
+
+.mat-form-field-infix {
+    border-bottom: dodgerblue;
+}

@@ -1,0 +1,35 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+        <mat-toolbar>Menu</mat-toolbar>
+        <mat-nav-list>
+            <a mat-list-item class="es" [routerLink]="['/uvt']">
+
+                <span class="material-icons" style="color:dodgerblue">
+                text_snippet 
+                </span> UVT</a>
+            <a mat-list-item [routerLink]="['/variables']" class="es">
+
+                <span class="material-icons" style="color:dodgerblue">
+                list_alt
+                </span> Rangos
+            </a>
+            <a mat-list-item class="es" [routerLink]="['/novedades/1']">
+
+                <span class="material-icons" style="color:dodgerblue">
+                people_alt
+                </span> Novedades
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content style="margin-bottom: 0; padding-bottom: 0;">
+        <mat-toolbar style="margin-bottom: 0; padding-bottom: 0; height: 0;">
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon" style="color: ghostwhite;">menu</mat-icon>
+      </button>
+
+
+        </mat-toolbar>
+        <router-outlet></router-outlet>
+
+    </mat-sidenav-content>
+</mat-sidenav-container>

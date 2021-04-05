@@ -1,0 +1,43 @@
+.sidenav-container {
+    height: 100%;
+}
+
+.sidenav {
+    width: 200px;
+}
+
+.sidenav .mat-toolbar {
+    background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.mat-toolbar {
+    background-color: dodgerblue;
+}
+
+span {
+    color: white;
+}
+
+.mat-list-item {
+    color: gray;
+    font-weight: 500;
+}
+
+.mat-sidenav-container {
+    font-family: 'Roboto';
+    font-style: normal;
+}
+
+.ma {
+    font-size: 2em;
+}
+
+.es {
+    margin-bottom: 1em !important;
+}

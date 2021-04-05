@@ -1,0 +1,16 @@
+table {
+    width: 100%;
+}
+
+.m {
+    width: 100%;
+}
+
+::ng-deep .cdk-overlay-container {
+    z-index: 1200 !important;
+}
+
+.letra {
+    font-size: 14px;
+    color: gray;
+}
