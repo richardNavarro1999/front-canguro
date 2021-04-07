@@ -12,11 +12,16 @@ export class NovedadService {
     }
 
     public baseUrl: string = "http://192.168.160.189:9095/api/";
-   
+  //  public baseUrl: string= "https://localhost:44386/api/"
+
 
 
     getAllNovedad(): Observable<any> {
         let url = this.baseUrl + 'Novedad';
+        return this._http.get( url)
+    }
+    getFiltrarNovedad(f1,f2): Observable<any> {
+        let url = this.baseUrl + 'Novedad/'+f1+'/'+f2;
         return this._http.get( url)
     }
 

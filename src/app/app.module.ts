@@ -33,7 +33,7 @@ import {MatDatepicker, MatDatepickerModule} from '@angular/material/datepicker';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatBadgeModule} from '@angular/material/badge';
-
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MatNativeDateModule } from '@angular/material/core';
 import { VariablesService } from './services/variables.services';
 @NgModule({
@@ -72,7 +72,9 @@ import { VariablesService } from './services/variables.services';
     MatNativeDateModule,
     MatTabsModule,
     MatRadioModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatSlideToggleModule
+    
     
 
     

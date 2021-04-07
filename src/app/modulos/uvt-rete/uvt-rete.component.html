@@ -97,7 +97,7 @@
 
             <mat-form-field class=" m">
                 <mat-label>Valor </mat-label>
-                <input matInput type="number" placeholder="Ingresar el Valor Total" value="" [(ngModel)]="valor">
+                <input matInput type="number" onkeypress="return event.charCode >= 48" min="1" placeholder="Ingresar el Valor Total" value="" [(ngModel)]="valor">
             </mat-form-field>
 
             <mat-label style="color:gray">Años</mat-label>
@@ -128,7 +128,7 @@
 
             <mat-form-field class=" m">
                 <mat-label>Valor </mat-label>
-                <input matInput type="number" placeholder="Ingresar el Valor Total" value="" [(ngModel)]="valorTri.valorRetefuente">
+                <input matInput type="number" onkeypress="return event.charCode >= 48" min="1" placeholder="Ingresar el Valor Total" value="" [(ngModel)]="valorTri.valorRetefuente">
             </mat-form-field>
 
             <mat-label style="color:gray">Años</mat-label>

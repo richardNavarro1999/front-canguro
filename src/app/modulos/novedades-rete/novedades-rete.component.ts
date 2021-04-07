@@ -6,6 +6,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ConceptoService } from 'src/app/services/concepto.service';
 import { EmpleadosService } from 'src/app/services/empleados.service';
 import { NovedadService } from 'src/app/services/novedades.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-novedades-rete',
@@ -16,7 +17,7 @@ export class NovedadesReteComponent implements  AfterViewInit {
 
     public value:string;
     public novedades:any;
-    public empleados:string;
+    public empleados:any=0;
     public conceptos:string;
     public mostrar:boolean=false;
     public mostrar3:boolean=false;
@@ -35,6 +36,15 @@ export class NovedadesReteComponent implements  AfterViewInit {
     public ruta: any;
     public cedula: number;
     public noveEdit: any;
+    public filtro= false;
+    public filtroFecha1:any;
+    public filtroFecha2:any;
+    public empleaEdit: any= {cedula: "32732444",
+    id: 6,
+    nombre: "SANDRA LUZ RAMIREZ REBOLLEDO",
+    salario: 2827480,};
+    public conceEdit: any;
+
 
     empleados2 = [
       {nombre:1005523663,id:2},
@@ -46,7 +56,7 @@ export class NovedadesReteComponent implements  AfterViewInit {
     
    
 
-    displayedColumns: string[] = ['empleado', 'concepto', 'cantidad', 'valorU','valorT','opcion'];
+    displayedColumns: string[] = ['empleado', 'concepto', 'cantidad', 'valorU','valorT','fecha','opcion'];
    
     dataSource ;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -54,11 +64,18 @@ export class NovedadesReteComponent implements  AfterViewInit {
     modalRefEditar: BsModalRef;
   
     openModal(template: TemplateRef<any>) {
+      this.getConcenptosAndEmpleados();
       this.modalRef = this.modalService.show(template);
     }
 
-    openModalEditar(template: TemplateRef<any>) {
+    openModalEditar(template: TemplateRef<any>,item) {
+      if(item.liquidacion===true){
+        Swal.fire('Nose puede editar porque ya se realizo la liquidacion')
+
+      }else{
+      this.getConcenptosAndEmpleados();
       this.modalRefEditar = this.modalService.show(template);
+     }
     }
     constructor(
 
@@ -74,14 +91,23 @@ export class NovedadesReteComponent implements  AfterViewInit {
     }
     ngAfterViewInit() {
       this.getAllNovedades();
-      this.getAllConceptos();
-      this.getAllEmpleados();
+  
       this.ruta = this._router.snapshot.paramMap.get('id');
       console.log(this.ruta)
      }
 
 
 
+
+
+  getConcenptosAndEmpleados(){
+    if(this.empleados===0){
+
+      this.getAllConceptos();
+      this.getAllEmpleados();
+    }
+   
+  }
 
 
   getAllNovedades(){
@@ -94,32 +120,99 @@ export class NovedadesReteComponent implements  AfterViewInit {
     }, error => console.error(error));
 
   }
+  getfiltrarNovedades(){
+
+    this.filtro=false;
+   
+   let a = JSON.stringify({
+    FechaInicio:
+    this.filtroFecha1});
+   let b = JSON.stringify({
+    FechaFin:
+    this.filtroFecha2});
+
+  ;
+
+  /*   this.novedadesService.getFiltrarNovedad(a,b).subscribe(result => {
+       this.novedades = result;
+        this.dataSource = new MatTableDataSource<any>(this.novedades);
+      this.dataSource.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
+       console.log("Resultado", result)
+    }, error => console.error(error));
+  */
+  }
   getAllEmpleados(){
        this.empleadoService.getAllEmpleado().subscribe(result => {
        this.empleados= result;
-       console.log("Empleados", result)
-    }, error => console.error(error));
+       }, error => console.error(error));
 
   }
   getAllConceptos(){
        this.conceptoService.getAllConceptos().subscribe(result => {
         this.conceptos= result; 
-       console.log("Conceptos", result)
-    }, error => console.error(error));
+     }, error => console.error(error));
 
   }
 
   getOneNovedad(item){
+    if(item.liquidacion===true){
+     
+    }else{
    this.noveEdit = item;
+    this.conceptoService.getConcepto(item.idConcepto).subscribe(result => {
+   console.log("Concepto", result);
+   this.conceEdit=result;
+    }, error => console.error(error));
+   this.empleadoService.getEmpleado(item.idEmpleado).subscribe(result => {
+   console.log("Empleado", result);
+   this.empleaEdit=result;
+    }, error => console.error(error));
+   }
   }
+
 
   calculos(){
       if(this.conceptoSelect.porcentaje> 0){
+
+        if(this.conceptoSelect.porHora = false){
         this.valorU = (this.conceptoSelect.porcentaje/100)* this.sueldo ;
-        this.valorU = Math.round(this.valorU)
-        this.porcentaje= this.conceptoSelect.porcentaje;
-        this.operacion= this.conceptoSelect.operacion;
-        this.valorTotal =this.valorU* this.cantidad;
+      
+      }else{
+        this.valorU = (this.conceptoSelect.porcentaje/100)* (this.sueldo/240);
+      
+      }
+      this.valorU = Math.round(this.valorU)
+      this.valorTotal =this.valorU* this.cantidad;
+      this.porcentaje= this.conceptoSelect.porcentaje;
+      this.operacion= this.conceptoSelect.operacion;
+         this.mostrar= true;
+         this.mostrar3=false;
+        }else{
+          this.mostrar=false;
+          this.mostrar3= true;
+          this.valorTotal= this.valorU;
+          this.porcentaje= 0;
+
+          
+        
+        }
+      
+    }
+  calculosEdit(){
+      if(this.conceEdit.porcentaje> 0){
+
+        if(this.conceEdit.porHora = false){
+        this.valorU = (this.conceEdit.porcentaje/100)* this.empleaEdit.salario ;
+      
+      }else{
+        this.valorU = (this.conceEdit.porcentaje/100)* (this.empleaEdit.salario/240);
+      
+      }
+      this.valorU = Math.round(this.valorU)
+      this.valorTotal =this.valorU* this.cantidad;
+      this.porcentaje= this.conceEdit.porcentaje;
+      this.operacion= this.conceEdit.operacion;
          this.mostrar= true;
          this.mostrar3=false;
         }else{
@@ -146,6 +239,18 @@ export class NovedadesReteComponent implements  AfterViewInit {
       
     }
 
+    salirModal(){
+      this.mostrar = false;
+      this.mostrar2 = false;
+      this.mostrar3 = false;
+      this.empleados = 0;
+      this.sueldo=0;
+      this.fecha= '';
+    }
+
+    
+    
+
     guardar(){
 
       let body =  {
@@ -158,6 +263,7 @@ export class NovedadesReteComponent implements  AfterViewInit {
       }
       this.novedadesService.pushNovedad(body).subscribe(result => {
        console.log("resul", result);
+       this.salirModal()
        this.getAllNovedades()
     }, error => console.error(error));
        }
@@ -168,8 +274,8 @@ export class NovedadesReteComponent implements  AfterViewInit {
           "cantidad": this.cantidad,
           "valorTotal": this.valorTotal,
           "valorUnitario": this.valorU,
-          "idEmpleado": this.empleadoSelect.id,
-          "idConcepto": this.conceptoSelect.id,
+          "idEmpleado": this.empleaEdit.id,
+          "idConcepto": this.conceEdit.id,
           "fechaNovedad": this.noveEdit.fechaNovedad
       }
       this.novedadesService.updateNovedad(this.noveEdit.id,body).subscribe(result => {
@@ -179,14 +285,18 @@ export class NovedadesReteComponent implements  AfterViewInit {
        }
 
     eliminar(item){
+      if(item.liquidacion===true){
+        Swal.fire('Nose puede eliminar porque ya se realizo la liquidacion')
 
-    
+
+      }else{
       this.novedadesService.deleteNovedad(item.id).subscribe(result => {
        console.log("resul", result);
        this.getAllNovedades();
     }, error => console.error(error));
         }
 
+      }
     
   }
   

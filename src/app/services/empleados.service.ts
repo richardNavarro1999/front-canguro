@@ -11,15 +11,20 @@ export class EmpleadosService {
         private _http: HttpClient,) {
     }
 
-    public baseUrl: string = "http://192.168.160.189:9095/api/";
-   
+    //public baseUrl: string = "http://192.168.160.189:9095/api/";
+    public baseUrl: string= "https://localhost:44386/api/"
+
 
 
     getAllEmpleado(): Observable<any> {
         let url = this.baseUrl + 'Empleado';
         return this._http.get( url)
     }
-/* 
+
+    getEmpleado(id: string) {
+        return this._http.get<any>(`${this.baseUrl}Empleado/${id}`);
+      }
+    /* 
     pushAssetsType(info): Observable<any> {
         let url = '' + 'api/v1/assets_type';
         let header = new HttpHeaders()
