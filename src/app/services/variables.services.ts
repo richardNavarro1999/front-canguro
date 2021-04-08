@@ -7,8 +7,8 @@ import { HttpClient } from '@angular/common/http';
 export class VariablesService {
 
 
-    public baseUrl: string = "http://192.168.160.189:9095/api/";
-    //public baseUrl: string= "https://localhost:44386/api/"
+     public baseUrl: string = "http://192.168.160.189:9095/api/";
+   //public baseUrl: string= "https://localhost:44386/api/"
 
   constructor(
     private http: HttpClient

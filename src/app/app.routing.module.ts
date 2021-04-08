@@ -21,7 +21,7 @@ const routes: Routes = [
         component: VariablesReteComponent
     }
     ,{
-        path: 'novedades/:id',
+        path: 'novedades',
         data: { pageTitle: 'Novedades' },
         component: NovedadesReteComponent
     }

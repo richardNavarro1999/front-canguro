@@ -37,20 +37,18 @@
     <div *ngIf="filtro ===true">
         <Label>Seleccione las fechas para filtrado de novedad</Label> <br><br>
         <div class="row">
-            <div class="col-md-4">
-                <mat-form-field appearance="legacy">
-                    <mat-label>Enter a date range</mat-label>
-                    <mat-date-range-input [rangePicker]="picker">
-                        <input [(ngModel)]="filtroFecha1" matStartDate placeholder="Start date">
-                        <input [(ngModel)]="filtroFecha2" matEndDate placeholder="End date">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field>
+            <div class="col-md-3">
+
+                <input type="date" class="form-control" [(ngModel)]="filtroFecha1">
+            </div>
+            <div class="col-md-3">
+
+                <input type="date" class="form-control" [(ngModel)]="filtroFecha2">
             </div>
 
+
             <div class="col-md-4">
-                <button mat-raised-button color="primary" style="margin-top: 1em;" (click)="getfiltrarNovedades()">Buscar</button>
+                <button mat-raised-button color="primary" (click)="getfiltrarNovedades()">Buscar</button>
 
             </div>
 
@@ -248,7 +246,7 @@
 
                 <mat-label style="color:gray">Conceptos</mat-label>
 
-                <ng-select [(ngModel)]="conceEdit" (change)="calculosEdit()">
+                <ng-select [(ngModel)]="conceptoSelect" (change)="calculosEdit()">
                     <ng-option *ngFor="let item of conceptos" [value]="item">{{item.nombre}}</ng-option>
                 </ng-select>
 
@@ -297,7 +295,7 @@
                 <div class="col-md-12" *ngIf="mostrar == true">
                     <mat-form-field class=" m" style="padding-top: 0.5em;">
                         <mat-label>Cantidad</mat-label>
-                        <input matInput type="number" onkeypress="return event.charCode >= 48" min="1" placeholder="Ingresar la cantidad" value="Sushi" [(ngModel)]="cantidad" (change)="calculos()">
+                        <input matInput type="number" onkeypress="return event.charCode >= 48" min="1" placeholder="Ingresar la cantidad" value="Sushi" [(ngModel)]="cantidad" (change)="calculosEdit()">
                     </mat-form-field>
                     <mat-label style="padding-bottom: 2em;">Porcentaje: </mat-label>
                     <mat-label class="letra">({{porcentaje}}%) </mat-label>

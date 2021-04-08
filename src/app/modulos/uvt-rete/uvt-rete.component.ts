@@ -40,8 +40,8 @@ export class UvtReteComponent implements OnInit {
     public fecha: string;
     public tamaño: number;
     public value : string;
-    //public baseUrl: string = "http://192.168.160.189:9095/api/";
-    public baseUrl: string= "https://localhost:44386/api/"
+    public baseUrl: string = "http://192.168.160.189:9095/api/";
+    //public baseUrl: string= "https://localhost:44386/api/"
 
     modalRef: BsModalRef;
     modalRefEditar: BsModalRef;

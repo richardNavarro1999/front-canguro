@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsReteComponent } from './components-rete/components-rete.component';
@@ -36,6 +36,8 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MatNativeDateModule } from '@angular/material/core';
 import { VariablesService } from './services/variables.services';
+import { BsDatepickerModule, BsLocaleService } from 'ngx-bootstrap/datepicker';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,7 +75,10 @@ import { VariablesService } from './services/variables.services';
     MatTabsModule,
     MatRadioModule,
     MatBadgeModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    ReactiveFormsModule,
+    BsDatepickerModule.forRoot()
+    
     
     
 
@@ -81,7 +86,7 @@ import { VariablesService } from './services/variables.services';
   ],
   providers: [MatIconRegistry,NovedadService, 
     ConceptoService,EmpleadosService , 
-    MatDatepickerModule,MatDatepicker,MatNativeDateModule,
+    MatDatepickerModule,MatDatepicker,MatNativeDateModule,BsLocaleService,
     VariablesService],
   bootstrap: [AppComponent]
 

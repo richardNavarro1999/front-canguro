@@ -7,6 +7,7 @@ import { ConceptoService } from 'src/app/services/concepto.service';
 import { EmpleadosService } from 'src/app/services/empleados.service';
 import { NovedadService } from 'src/app/services/novedades.service';
 import Swal from 'sweetalert2';
+import {FormGroup, FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-novedades-rete',
@@ -44,7 +45,16 @@ export class NovedadesReteComponent implements  AfterViewInit {
     nombre: "SANDRA LUZ RAMIREZ REBOLLEDO",
     salario: 2827480,};
     public conceEdit: any;
-
+    currentDate = new Date();
+    form = new FormGroup({
+      dateYMD: new FormControl(new Date()),
+      dateFull: new FormControl(new Date()),
+      dateMDY: new FormControl(new Date()),
+      dateRange: new FormControl([
+        new Date(),
+        new Date(this.currentDate.setDate(this.currentDate.getDate() + 7))
+      ])
+    });
 
     empleados2 = [
       {nombre:1005523663,id:2},
@@ -65,6 +75,9 @@ export class NovedadesReteComponent implements  AfterViewInit {
   
     openModal(template: TemplateRef<any>) {
       this.getConcenptosAndEmpleados();
+      this.mostrar = false;
+      this.mostrar2 = false;
+      this.mostrar3 = false;
       this.modalRef = this.modalService.show(template);
     }
 
@@ -74,6 +87,9 @@ export class NovedadesReteComponent implements  AfterViewInit {
 
       }else{
       this.getConcenptosAndEmpleados();
+      this.mostrar = false;
+      this.mostrar2 = false;
+      this.mostrar3 = false;
       this.modalRefEditar = this.modalService.show(template);
      }
     }
@@ -123,24 +139,19 @@ export class NovedadesReteComponent implements  AfterViewInit {
   getfiltrarNovedades(){
 
     this.filtro=false;
-   
-   let a = JSON.stringify({
-    FechaInicio:
-    this.filtroFecha1});
-   let b = JSON.stringify({
-    FechaFin:
-    this.filtroFecha2});
+   let a =this.filtroFecha1;
+   let b =this.filtroFecha2;
 
   ;
 
-  /*   this.novedadesService.getFiltrarNovedad(a,b).subscribe(result => {
+    this.novedadesService.getFiltrarNovedad(a,b).subscribe(result => {
        this.novedades = result;
         this.dataSource = new MatTableDataSource<any>(this.novedades);
       this.dataSource.paginator = this.paginator;
       this.changeDetectorRefs.detectChanges();
        console.log("Resultado", result)
     }, error => console.error(error));
-  */
+  
   }
   getAllEmpleados(){
        this.empleadoService.getAllEmpleado().subscribe(result => {
@@ -200,32 +211,34 @@ export class NovedadesReteComponent implements  AfterViewInit {
       
     }
   calculosEdit(){
-      if(this.conceEdit.porcentaje> 0){
+    if(this.conceptoSelect.porcentaje> 0){
 
-        if(this.conceEdit.porHora = false){
-        this.valorU = (this.conceEdit.porcentaje/100)* this.empleaEdit.salario ;
-      
+      if(this.conceptoSelect.porHora = false){
+      this.valorU = (this.conceptoSelect.porcentaje/100)* this.empleaEdit.salario ;
+    
+    }else{
+      this.valorU = (this.conceptoSelect.porcentaje/100)* (this.empleaEdit.salario/240);
+    
+    }
+    console.log("valor",this.valorU)
+    this.valorU = Math.round(this.valorU)
+    this.valorTotal =this.valorU* this.cantidad;
+    this.porcentaje= this.conceptoSelect.porcentaje;
+    this.operacion= this.conceptoSelect.operacion;
+       this.mostrar= true;
+       this.mostrar3=false;
       }else{
-        this.valorU = (this.conceEdit.porcentaje/100)* (this.empleaEdit.salario/240);
+        this.mostrar=false;
+        this.mostrar3= true;
+        this.valorTotal= this.valorU;
+        this.porcentaje= 0;
+
+        
       
       }
-      this.valorU = Math.round(this.valorU)
-      this.valorTotal =this.valorU* this.cantidad;
-      this.porcentaje= this.conceEdit.porcentaje;
-      this.operacion= this.conceEdit.operacion;
-         this.mostrar= true;
-         this.mostrar3=false;
-        }else{
-          this.mostrar=false;
-          this.mostrar3= true;
-          this.valorTotal= this.valorU;
-          this.porcentaje= 0;
-
-          
-        
-        }
+    
       
-    }
+    } 
   calculos2(){
     if( this.sueldo>0){
       this.calculos()
@@ -270,12 +283,12 @@ export class NovedadesReteComponent implements  AfterViewInit {
     Actualizar(){
 
       let body =  {
-          "id": this.noveEdit.id,
+        //  "id": this.noveEdit.id,
           "cantidad": this.cantidad,
           "valorTotal": this.valorTotal,
           "valorUnitario": this.valorU,
-          "idEmpleado": this.empleaEdit.id,
-          "idConcepto": this.conceEdit.id,
+         // "idEmpleado": this.empleaEdit.id,
+          "idConcepto": this.conceptoSelect.id,
           "fechaNovedad": this.noveEdit.fechaNovedad
       }
       this.novedadesService.updateNovedad(this.noveEdit.id,body).subscribe(result => {
