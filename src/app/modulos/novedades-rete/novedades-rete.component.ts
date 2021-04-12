@@ -74,6 +74,7 @@ export class NovedadesReteComponent implements  AfterViewInit {
     modalRefEditar: BsModalRef;
   
     openModal(template: TemplateRef<any>) {
+      this.Limipiar();
       this.getConcenptosAndEmpleados();
       this.mostrar = false;
       this.mostrar2 = false;
@@ -165,15 +166,38 @@ export class NovedadesReteComponent implements  AfterViewInit {
      }, error => console.error(error));
 
   }
+  Limipiar()
+  {
+    this.valorU=0;
+    this.valorTotal=0;
+    this.cantidad=1;
+    this.conceptoSelect=[]
+
+  }
 
   getOneNovedad(item){
     if(item.liquidacion===true){
      
     }else{
    this.noveEdit = item;
+
+   
+
+   this.valorU = item.valorUnitario;
+   this.cantidad = item.cantidad;
+   this.valorTotal = item.valorTotal;
+
+   console.log("valor",this.valorU)
     this.conceptoService.getConcepto(item.idConcepto).subscribe(result => {
    console.log("Concepto", result);
    this.conceEdit=result;
+
+   if(this.conceEdit["porcentaje"]>0){
+    
+    this.mostrar= true;
+   }else{
+   this.mostrar3=true;
+   }
     }, error => console.error(error));
    this.empleadoService.getEmpleado(item.idEmpleado).subscribe(result => {
    console.log("Empleado", result);
@@ -184,6 +208,7 @@ export class NovedadesReteComponent implements  AfterViewInit {
 
 
   calculos(){
+    
       if(this.conceptoSelect.porcentaje> 0){
 
         if(this.conceptoSelect.porHora = false){
@@ -211,20 +236,22 @@ export class NovedadesReteComponent implements  AfterViewInit {
       
     }
   calculosEdit(){
-    if(this.conceptoSelect.porcentaje> 0){
+    
+   
+    if(this.conceEdit.porcentaje> 0){
 
-      if(this.conceptoSelect.porHora = false){
-      this.valorU = (this.conceptoSelect.porcentaje/100)* this.empleaEdit.salario ;
+      if(this.conceEdit.porHora = false){
+      this.valorU = (this.conceEdit.porcentaje/100)* this.empleaEdit.salario ;
     
     }else{
-      this.valorU = (this.conceptoSelect.porcentaje/100)* (this.empleaEdit.salario/240);
+      this.valorU = (this.conceEdit.porcentaje/100)* (this.empleaEdit.salario/240);
     
     }
     console.log("valor",this.valorU)
     this.valorU = Math.round(this.valorU)
     this.valorTotal =this.valorU* this.cantidad;
-    this.porcentaje= this.conceptoSelect.porcentaje;
-    this.operacion= this.conceptoSelect.operacion;
+    this.porcentaje= this.conceEdit.porcentaje;
+    this.operacion= this.conceEdit.operacion;
        this.mostrar= true;
        this.mostrar3=false;
       }else{
@@ -240,6 +267,7 @@ export class NovedadesReteComponent implements  AfterViewInit {
       
     } 
   calculos2(){
+    
     if( this.sueldo>0){
       this.calculos()
     }
@@ -253,6 +281,7 @@ export class NovedadesReteComponent implements  AfterViewInit {
     }
 
     salirModal(){
+      
       this.mostrar = false;
       this.mostrar2 = false;
       this.mostrar3 = false;
@@ -281,6 +310,13 @@ export class NovedadesReteComponent implements  AfterViewInit {
     }, error => console.error(error));
        }
     Actualizar(){
+      if(this.valorU ===0){
+        this.cantidad= this.noveEdit.cantidad;
+        this.valorU= this.noveEdit.valorUnitario;
+        this.valorTotal=  this.cantidad*this.valorU;
+  
+  
+      }
 
       let body =  {
         //  "id": this.noveEdit.id,
@@ -288,7 +324,7 @@ export class NovedadesReteComponent implements  AfterViewInit {
           "valorTotal": this.valorTotal,
           "valorUnitario": this.valorU,
          // "idEmpleado": this.empleaEdit.id,
-          "idConcepto": this.conceptoSelect.id,
+          "idConcepto": this.conceEdit.id,
           "fechaNovedad": this.noveEdit.fechaNovedad
       }
       this.novedadesService.updateNovedad(this.noveEdit.id,body).subscribe(result => {
